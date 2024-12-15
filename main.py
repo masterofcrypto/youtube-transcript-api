@@ -1,6 +1,6 @@
 from youtube_transcript_api import YouTubeTranscriptApi
 
-video_url = "https://www.youtube.com/watch?v=2TL3DgIMY1g"
+video_url = "https://www.youtube.com/watch?v=9UIETO3bcsc"
 video_id = video_url.replace("https://www.youtube.com/watch?v=", "")
 
 transcript_data = YouTubeTranscriptApi.get_transcript(video_id)
