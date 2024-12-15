@@ -7,18 +7,19 @@ app = Flask(__name__)
 def get_transcript():
     video_id = request.args.get('video_id')
     if not video_id:
-        return jsonify({"error": "video_id manquant"}), 400
+        return jsonify({"error": "Le paramètre 'video_id' est manquant"}), 400
 
     try:
-        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['en', 'fr'])
+        # Essaye d'obtenir les sous-titres en français, sinon en anglais
+        transcript = YouTubeTranscriptApi.get_transcript(video_id, languages=['fr', 'en'])
         return jsonify(transcript), 200
     except TranscriptsDisabled:
         return jsonify({"error": "Les sous-titres sont désactivés pour cette vidéo"}), 404
     except VideoUnavailable:
         return jsonify({"error": "Vidéo introuvable ou indisponible"}), 404
     except Exception as e:
-        # Loggez l'erreur pour la voir dans les logs Render
-        app.logger.error(e)
+        # Log l'erreur pour la voir dans les logs Render
+        app.logger.error(f"Erreur lors de la récupération des sous-titres: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
